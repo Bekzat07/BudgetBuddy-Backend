@@ -12,9 +12,6 @@ export class User {
   password: string;
 
   @Prop()
-  userId: number;
-
-  @Prop()
   resetCode: number;
 
   @Prop()
