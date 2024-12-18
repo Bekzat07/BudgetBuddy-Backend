@@ -27,7 +27,7 @@ export class AuthService {
     if (storedHash != hash.toString('hex')) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: user.userId, email: user.email };
+    const payload = { sub: user._id.toHexString(), email: user.email };
     const token = await this.jwtService.signAsync(payload);
     const userWithToken = {
       ...user,
