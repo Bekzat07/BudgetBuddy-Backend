@@ -21,4 +21,7 @@ export class AuthDto {
 
   @Exclude()
   resetCodeExpiry: Date;
+
+  @Expose()
+  phone: string;
 }

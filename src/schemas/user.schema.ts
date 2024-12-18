@@ -18,6 +18,9 @@ export class User {
   resetCodeExpiry: Date;
 
   _id: Types.ObjectId;
+
+  @Prop()
+  phone: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

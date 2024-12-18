@@ -38,13 +38,14 @@ export class AuthService {
     return userWithToken;
   }
 
-  async signUp(email: string, password: string) {
+  async signUp(email: string, password: string, phone: string) {
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const hashPassword = salt + '.' + hash.toString('hex');
     const result = await this.usersService.create({
       email,
       password: hashPassword,
+      phone,
     });
     return result;
   }
