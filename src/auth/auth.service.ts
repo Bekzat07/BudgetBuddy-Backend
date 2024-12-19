@@ -39,6 +39,10 @@ export class AuthService {
   }
 
   async signUp(email: string, password: string, phone: string) {
+    const user = this.usersService.findOne(email);
+    if (user) {
+      throw new UnauthorizedException('Email already exists');
+    }
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const hashPassword = salt + '.' + hash.toString('hex');
