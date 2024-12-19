@@ -12,6 +12,7 @@ const dbUrl = process.env.DATABASE_URL;
 if (!dbUrl) {
   throw new Error('DB_URL environment variable is not defined');
 }
+console.log('Connecting to MongoDB:', process.env.DATABASE_URL);
 
 @Module({
   imports: [
