@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { BudgetModule } from './budget/budget.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
@@ -21,6 +22,7 @@ console.log('Connecting to MongoDB:', process.env.DATABASE_URL);
     MongooseModule.forRoot(dbUrl, {
       serverSelectionTimeoutMS: 5000,
     }),
+    BudgetModule,
   ],
   controllers: [AppController],
   providers: [AppService],
