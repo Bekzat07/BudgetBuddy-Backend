@@ -24,4 +24,7 @@ export class AuthDto {
 
   @Expose()
   phone: string;
+
+  @Expose()
+  name: string;
 }

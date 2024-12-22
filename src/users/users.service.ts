@@ -22,6 +22,7 @@ export class UsersService {
     email: string;
     password: string;
     phone?: string;
+    name?: string;
   }): Promise<User> {
     const newUser = new this.userModel({
       ...userData,

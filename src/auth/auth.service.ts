@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, pass: string) {
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersService.findOne(email.toLowerCase());
 
     if (!user) {
       throw new UnauthorizedException();
@@ -28,7 +28,10 @@ export class AuthService {
     if (storedHash != hash.toString('hex')) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: user._id.toHexString(), email: user.email };
+    const payload = {
+      sub: user._id.toHexString(),
+      email: user.email.toLowerCase(),
+    };
     const token = await this.jwtService.signAsync(payload);
     const userWithToken = {
       ...user,
@@ -38,16 +41,31 @@ export class AuthService {
     return userWithToken;
   }
 
-  async signUp(email: string, password: string, phone: string) {
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-    const hashPassword = salt + '.' + hash.toString('hex');
-    const result = await this.usersService.create({
-      email,
-      password: hashPassword,
-      phone,
-    });
-    return result;
+  async signUp({
+    email,
+    password,
+    phone,
+    name,
+  }: {
+    email: string;
+    password: string;
+    phone: string;
+    name: string;
+  }) {
+    const user = await this.usersService.findOne(email.toLowerCase());
+    if (!user) {
+      const salt = randomBytes(8).toString('hex');
+      const hash = (await scrypt(password, salt, 32)) as Buffer;
+      const hashPassword = salt + '.' + hash.toString('hex');
+      const result = await this.usersService.create({
+        name,
+        email: email.toLowerCase(),
+        password: hashPassword,
+        phone,
+      });
+      return result;
+    }
+    throw new UnauthorizedException('Email already exists');
   }
 
   async sendResetCode(email: string) {

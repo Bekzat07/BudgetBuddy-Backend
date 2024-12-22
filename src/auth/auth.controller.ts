@@ -16,10 +16,7 @@ export class AuthController {
 
   @Post('register')
   signUp(@Body() registerDto: any) {
-    return this.authService.signUp(
-      registerDto.email,
-      registerDto.password,
-      registerDto.phone,
-    );
+    console.log('registerDto', registerDto);
+    return this.authService.signUp(registerDto);
   }
 }
