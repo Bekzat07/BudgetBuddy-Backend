@@ -9,7 +9,7 @@ export class Budget {
   expenses: number[];
 
   @Prop()
-  income: number[];
+  incomes: number[];
 
   @Prop({ default: new Date() })
   date: Date;
