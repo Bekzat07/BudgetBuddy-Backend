@@ -24,7 +24,6 @@ export class BudgetService {
       expenses: [budgetData.expenses],
       userId: budgetData.userId,
       currency: budgetData.currency,
-      incomes: [],
     });
     return db.save();
   }
