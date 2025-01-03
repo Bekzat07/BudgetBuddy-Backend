@@ -28,6 +28,7 @@ export class AuthService {
     if (storedHash != hash.toString('hex')) {
       throw new UnauthorizedException();
     }
+    console.log('user.email.toLowerCase()', user.email.toLowerCase());
     const payload = {
       sub: user._id.toHexString(),
       email: user.email.toLowerCase(),
