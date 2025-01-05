@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
@@ -7,10 +7,14 @@ import { Budget } from 'src/schemas/budget.schema';
 // dto
 import { ExpensesDto } from './dto/expenses.dto';
 import { IncomesDto } from './dto/income.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class BudgetService {
-  constructor(@InjectModel(Budget.name) private BudgetModel: Model<Budget>) {}
+  constructor(
+    @InjectModel(Budget.name) private BudgetModel: Model<Budget>,
+    private userService: UsersService,
+  ) {}
 
   async addExpense(budgetData: ExpensesDto) {
     const budget = await this.BudgetModel.findOne({
@@ -42,5 +46,18 @@ export class BudgetService {
       income: [budgetData.income],
     });
     return db.save();
+  }
+
+  async getBudget(email: string) {
+    const user = await this.userService.findOne(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const budget = await this.BudgetModel.findOne({ userId: user._id });
+    if (!budget) {
+      throw new NotFoundException('Budget not found');
+    }
+    return budget;
   }
 }
