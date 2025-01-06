@@ -5,13 +5,12 @@ import { Model, Types } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import * as admin from 'firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
-import * as path from 'path';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {
     if (!admin.apps.length) {
-      const serviceAccount = path.join(__dirname, '../../serviceAccount.json');
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
@@ -51,7 +50,6 @@ export class UsersService {
       { $set: { image: result } },
       { new: true },
     );
-    console.log('finish');
     return result;
   }
 
