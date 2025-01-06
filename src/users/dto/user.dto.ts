@@ -8,6 +8,9 @@ export class UserDto {
   email: string;
 
   @Expose()
+  image: string;
+
+  @Expose()
   accessToken?: string;
 
   @Expose()
