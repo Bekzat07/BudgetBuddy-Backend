@@ -19,4 +19,14 @@ export class AuthController {
     console.log('registerDto', registerDto);
     return this.authService.signUp(registerDto);
   }
+
+  @Post('refreshToken')
+  async refreshToken(@Body('refreshToken') refreshToken: string) {
+    console.log('refreshToken', refreshToken);
+    const payload = await this.authService.validateRefreshToken(refreshToken);
+    console.log('payload', payload);
+    const tokens = await this.authService.generateToken(payload);
+    console.log('tokens', tokens);
+    return tokens;
+  }
 }

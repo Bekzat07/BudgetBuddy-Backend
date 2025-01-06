@@ -28,15 +28,24 @@ export class AuthService {
     if (storedHash != hash.toString('hex')) {
       throw new UnauthorizedException();
     }
-    console.log('user.email.toLowerCase()', user.email.toLowerCase());
+
     const payload = {
       sub: user._id.toHexString(),
       email: user.email.toLowerCase(),
     };
-    const token = await this.jwtService.signAsync(payload);
+    const token = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_SECRET_KEY,
+      expiresIn: '1h',
+    });
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
+      expiresIn: '7d',
+    });
+
     const userWithToken = {
       ...user,
       accessToken: token,
+      refreshToken,
     };
 
     return userWithToken;
@@ -69,6 +78,35 @@ export class AuthService {
     throw new UnauthorizedException('Email already exists');
   }
 
+  async validateRefreshToken(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+
+      return payload;
+    } catch {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+  }
+
+  async generateToken(payload: { email: string; sub: string }) {
+    const token = await this.jwtService.signAsync(
+      { email: payload.email, sub: payload.sub },
+      {
+        secret: process.env.JWT_SECRET_KEY,
+        expiresIn: '1h',
+      },
+    );
+    const refreshToken = await this.jwtService.signAsync(
+      { email: payload.email, sub: payload.sub },
+      {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '7d',
+      },
+    );
+    return { accessToken: token, refreshToken };
+  }
   async sendResetCode(email: string) {
     const user = await this.usersService.findOne(email);
     if (!user) {

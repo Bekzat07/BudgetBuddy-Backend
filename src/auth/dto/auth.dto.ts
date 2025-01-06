@@ -11,6 +11,9 @@ export class AuthDto {
   accessToken?: string;
 
   @Expose()
+  refreshToken?: string;
+
+  @Expose()
   _id?: any;
 
   @Exclude()
