@@ -15,6 +15,9 @@ export class User {
   resetCode: number;
 
   @Prop()
+  image: string;
+
+  @Prop()
   resetCodeExpiry: Date;
 
   _id: Types.ObjectId;
