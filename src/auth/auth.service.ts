@@ -30,7 +30,7 @@ export class AuthService {
     }
 
     const payload = {
-      sub: user._id.toHexString(),
+      sub: user._id,
       email: user.email.toLowerCase(),
     };
     const token = await this.jwtService.signAsync(payload, {
