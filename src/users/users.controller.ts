@@ -32,6 +32,7 @@ export class UsersController {
     @Param('userId') userId: string,
     @UploadedFile() file: any,
   ) {
+    console.log('file', file);
     const imageUrl = await this.userService.uploadFile(file, userId);
     return { userId, image: imageUrl };
   }
