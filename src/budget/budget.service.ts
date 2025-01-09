@@ -40,10 +40,11 @@ export class BudgetService {
       budget.incomes.push(budgetData.income);
       return budget.save();
     }
+
     const db = new this.BudgetModel({
       userId: budgetData.userId,
       currency: budgetData.currency,
-      income: [budgetData.income],
+      incomes: [budgetData.income],
     });
     return db.save();
   }
