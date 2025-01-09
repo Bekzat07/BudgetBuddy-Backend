@@ -55,8 +55,8 @@ export class UsersService {
 
   async findOne(email: string): Promise<User | undefined> {
     const res = await this.userModel.findOne({ email }).lean().exec();
-    console.log('res', res);
-    return { ...res, _id: res._id.toString() };
+    const user = res ? { ...res, _id: res?._id.toString() } : null;
+    return user;
   }
 
   async findId(id: string) {
