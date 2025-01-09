@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import * as admin from 'firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
@@ -55,7 +55,8 @@ export class UsersService {
 
   async findOne(email: string): Promise<User | undefined> {
     const res = await this.userModel.findOne({ email }).lean().exec();
-    return res;
+    console.log('res', res);
+    return { ...res, _id: res._id.toString() };
   }
 
   async findId(id: string) {
@@ -80,7 +81,7 @@ export class UsersService {
     return result[0];
   }
 
-  async updateResetCode(id: Types.ObjectId, resetCode: number, expiry: Date) {
+  async updateResetCode(id: string, resetCode: number, expiry: Date) {
     const result = await this.userModel.findByIdAndUpdate(
       id,
       {
@@ -95,7 +96,7 @@ export class UsersService {
     return result.save();
   }
 
-  async updatePassword(id: Types.ObjectId, newPassword: any) {
+  async updatePassword(id: string, newPassword: any) {
     const result = await this.userModel
       .findByIdAndUpdate(
         id,
