@@ -113,7 +113,7 @@ export class UsersService {
 
   async findByName(name: string) {
     const user = await this.userModel
-      .findOne({ name: { $regex: new RegExp(name, 'i') } })
+      .find({ name: { $regex: new RegExp(name, 'i') } })
       .lean()
       .exec();
     return user;
