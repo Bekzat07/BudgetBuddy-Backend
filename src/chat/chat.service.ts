@@ -21,8 +21,9 @@ export class ChatService {
     });
     await message.save();
 
+    const participants = [senderId, receiverId].sort();
     const chat = await this.chatModel.findOneAndUpdate(
-      { participants: { $all: [senderId, receiverId] } },
+      { participants },
       { $push: { messages: message._id } },
       { new: true, upsert: true },
     );
@@ -31,6 +32,18 @@ export class ChatService {
   }
 
   async getMessages(chatId: string) {
-    return this.chatModel.findById(chatId).populate('messages');
+    try {
+      const res = await this.chatModel
+        .findById(chatId)
+        .populate({
+          path: 'messages',
+          model: 'Message',
+        })
+        .exec();
+      return res;
+    } catch (error) {
+      console.error('Error populating messages:', error);
+      throw error;
+    }
   }
 }
