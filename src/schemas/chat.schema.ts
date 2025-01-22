@@ -6,6 +6,9 @@ export class Chat extends Document {
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   participants: Types.ObjectId[];
 
+  @Prop({ type: String })
+  user: string;
+
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Message' }] })
   messages: Types.ObjectId[];
 }
