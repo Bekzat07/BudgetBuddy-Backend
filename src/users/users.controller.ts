@@ -3,6 +3,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Request,
   UploadedFile,
   UseGuards,
@@ -35,5 +36,11 @@ export class UsersController {
     console.log('file', file);
     const imageUrl = await this.userService.uploadFile(file, userId);
     return { userId, image: imageUrl };
+  }
+
+  @Get()
+  async findByName(@Query('name') name: string) {
+    const result = await this.userService.findByName(name);
+    return result;
   }
 }

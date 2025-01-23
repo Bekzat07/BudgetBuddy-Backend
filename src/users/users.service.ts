@@ -110,4 +110,12 @@ export class UsersService {
       .exec();
     return result.save();
   }
+
+  async findByName(name: string) {
+    const user = await this.userModel
+      .find({ name: { $regex: new RegExp(name, 'i') } })
+      .lean()
+      .exec();
+    return user;
+  }
 }
