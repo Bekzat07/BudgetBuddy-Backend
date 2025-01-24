@@ -1,11 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+    "module": "commonjs", // Module system: CommonJS is good for Node.js.
+    "declaration": true, // Generate .d.ts declaration files (good for library authors).
+    "removeComments": true, // Remove comments from the output.
+    "emitDecoratorMetadata": true, // For metadata reflection when using decorators.
+    "experimentalDecorators": true, // Enable decorators.
+    "allowSyntheticDefaultImports": true, // Allow synthetic default imports.
+    "target": "ES2021", // Target modern JavaScript (ES2021).
+    "sourceMap": true, // Generate source maps (for debugging).
+    "outDir": "./dist", // Output directory for compiled files.
+    "baseUrl": "./", // Base URL for module resolution.
+    "incremental": true, // Incremental compilation for faster builds.
+    "skipLibCheck": true, // Skip type checking of declaration files (useful for faster builds).
+    "strictNullChecks": false, // Disable strict null checks.
+    "noImplicitAny": false, // Allow variables to have an implicit `any` type.
+    "strictBindCallApply": false, // Disable strict checks for bind/call/apply.
+    "forceConsistentCasingInFileNames": false, // Allow case-insensitive file imports.
+    "noFallthroughCasesInSwitch": false // Allow fallthrough cases in `switch` statements.
+  }
 }
